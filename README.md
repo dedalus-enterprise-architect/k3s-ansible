@@ -21,7 +21,23 @@ on processor architecture:
 Deployment environment must have Ansible 2.4.0+
 Master and nodes must have passwordless SSH access
 
-## Usage
+## Variables
+
+|Variable|Example|Description|
+|--|--|--|
+|ansible_user|ubuntu|user to connect via ssh to to master|
+|ansible_ssh_private_key_file|./secrets/id_rsa|ssh private key file|
+|k3s_version|1.25.9+k3s1|k3s version from https://github.com/k3s-io/k3s/releases|
+|master_ip|192.16.35.12|master node ip or fqdn|
+|single_node|true|set to true if you want to deploy K3s on a single node (default is false)|
+
+## Single node cluster
+
+```bash
+ansible-playbook site.yml --extra-vars "ansible_user=ubuntu ansible_ssh_private_key_file=id_rsa k3s_version=v1.25.9+k3s1 master_ip=192.16.35.12 single_node=true"
+```
+
+## Multiple nodes cluster
 
 First create a new directory based on the `sample` directory within the `inventory` directory:
 
