@@ -1,0 +1,23 @@
+---
+
+- name: Deploy K8s dashboard
+  hosts: master
+
+  vars_files:
+    - vars/static/common.yaml
+
+  tasks:
+    - name: Retrieve dashboard latest version
+      ansible.builtin.shell: >
+        curl -w '%{url_effective}' -I -L -s -S {{dashboard_github}}/latest -o /dev/null | sed -e 's|.*/||'
+      register: dashboard_version
+
+    - name: Deploy dashboard
+      become: true
+      ansible.builtin.shell: >
+        k3s kubectl create -f "https://raw.githubusercontent.com/kubernetes/dashboard/{{dashboard_version.stdout}}/aio/deploy/recommended.yaml"
+      register: dashboard_create
+
+    - name:
+      become: true
+        k3s kubectl create -f dashboard.admin-user.yml -f dashboard.admin-user-role.yml
