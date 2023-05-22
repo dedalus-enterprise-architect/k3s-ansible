@@ -29,7 +29,7 @@ Master and nodes must have passwordless SSH access
 |ansible_ssh_private_key_file|./secrets/id_rsa|ssh private key file|
 |k3s_version|1.25.9+k3s1|k3s version from https://github.com/k3s-io/k3s/releases|
 |systemd_dir|/etc/systemd/system|path to systemd|
-|master_address|192.168.1.2|master node address or FQDN (used only for single node)
+|master_address|192.168.1.2|master node address or FQDN (used only for single node)|
 
 ## Single node cluster
 
