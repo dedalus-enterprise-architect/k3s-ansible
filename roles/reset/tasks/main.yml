@@ -1,9 +1,9 @@
 ---
 - name: Disable services
-  systemd:
+  ansible.builtin.systemd:
     name: "{{ item }}"
     state: stopped
-    enabled: no
+    enabled: false
   failed_when: false
   with_items:
     - k3s
@@ -38,5 +38,5 @@
     - /var/lib/rancher/k3s
 
 - name: daemon_reload
-  systemd:
-    daemon_reload: yes
+  ansible.builtin.systemd:
+    daemon_reload: true

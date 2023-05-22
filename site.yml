@@ -1,30 +1,48 @@
 ---
+#- name: T1
+#  hosts: localhost
+#
+#  tasks:
+#    - name: Add single node master to inventory
+#      ansible.builtin.add_host:
+#       name: "{{ master_ip }}"
+#       host_key_checking: false
+#       ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+#       groups: "master"
+#      when: single_node == true
 
-- name: Add single node master to inventory
-  ansible.builtin.add_host:
-   name: "{{ master_ip }}"
-   host_key_checking: false
-   ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
-   groups: "master"
-  when: single_node == true
-
-- name: Deploy K3s binaries
+- name: T2
   hosts: k3s_cluster
   become: true
   gather_facts: true
   roles:
-    - role: prereq
-    - role: download
- 
-- name: Configuring master node
+    - prereq
+    - download
+
+  #tasks:
+  #  - name: Deploy K3s binaries
+  #    roles:
+  #      - prereq
+  #      - download
+
+- name: T3
   hosts: master
   become: true
   roles:
-    - role: k3s/master
- 
-- name: Configuring nodes
+    - k3s/master
+
+  #tasks:
+  #  - name: Configuring master node
+  #    roles:
+  #      - k3s/master
+
+- name: T4
   hosts: node
   become: true
   roles:
-    - role: k3s/node
-  
+    - k3s/node
+
+  #tasks:
+  #  - name: Configuring nodes
+  #    roles:
+  #      - k3s/node
