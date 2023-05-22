@@ -29,14 +29,14 @@ Master and nodes must have passwordless SSH access
 |ansible_ssh_private_key_file|./secrets/id_rsa|ssh private key file|
 |k3s_version|1.25.9+k3s1|k3s version from https://github.com/k3s-io/k3s/releases|
 |systemd_dir|/etc/systemd/system|path to systemd|
+|master_address|192.168.1.2|master node address or FQDN (used only for single node)
 
 ## Single node cluster
 
-Modify the inventory file in `inventory/single_node/hosts.ini` adding the IP/FQDN of the single node in the `master` section.
-Also edit `inventory/single_node/group_vars/all.yml` to match your environment.
+Edit `inventory/single_node/group_vars/all.yml` to match your environment.
 
 ```bash
-ansible-playbook site.yml -i inventory/single_node/hosts.ini"
+ansible-playbook site.yml -i inventory/single_node/hosts.ini --extra-vars "master_address=192.168.1.2"
 ```
 
 ## Multiple nodes cluster
@@ -74,7 +74,13 @@ ansible-playbook site.yml -i inventory/my-cluster/hosts.ini
 Run the following playbook against the original inventory used to deploy the nodes, ex.
 
 ```bash
-ansible-playbook reset.yml -i inventory/single_node/hosts.ini
+ansible-playbook reset.yml -i inventory/my-cluster/hosts.ini
+```
+
+or
+
+```bash
+ansible-playbook reset.yml -i inventory/single_node/hosts.ini --extra-vars "master_address=192.168.1.2"
 ```
 
 ## Kubeconfig
