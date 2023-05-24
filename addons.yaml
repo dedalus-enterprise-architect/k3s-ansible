@@ -10,13 +10,13 @@
 
     - name: Retrieve dashboard latest version
       ansible.builtin.shell: >
-        curl -w '%{url_effective}' -I -L -s -S {{dashboard_github}}/latest -o /dev/null | sed -e 's|.*/||'
+        curl -w '%{url_effective}' -I -L -s -S {{ dashboard_github }}/latest -o /dev/null | sed -e 's|.*/||'
       register: dashboard_version
 
     - name: Deploy dashboard
       become: true
       ansible.builtin.shell: >
-        k3s kubectl create -f "https://raw.githubusercontent.com/kubernetes/dashboard/{{dashboard_version.stdout}}/aio/deploy/recommended.yaml"
+        k3s kubectl create -f "https://raw.githubusercontent.com/kubernetes/dashboard/{{ dashboard_version.stdout }}/aio/deploy/recommended.yaml"
       register: dashboard_create
 
     - name: Set dashboard service account
@@ -27,4 +27,4 @@
     - name: Set dashboard RBAC
       become: true
       ansible.builtin.shell: >
-        k3s kubectl create -f "https://raw.githubusercontent.com/dedalus-enterprise-architect/k3s-ansible/master/definitions/dashboard.admin-user-role.yml
+        k3s kubectl create -f "https://raw.githubusercontent.com/dedalus-enterprise-architect/k3s-ansible/master/definitions/dashboard.admin-user-role.yml"
